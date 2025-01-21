@@ -7,7 +7,7 @@ class Boid
 {
 public:
 	int id;
-	float perceptionRadias;
+	//float perceptionRadias;
 	float maxForce = 0.16f;
 	float maxSpeed = 1.4f;
 	glm::vec3 position;
@@ -19,11 +19,11 @@ public:
 	Core::RenderContext context;
 	Boid(int id, float perceptionRadias, glm::vec2 startPositionBoundes);
 	void update(Boid* boids, int boidsNumber);
-	void flock(Boid* boids, int boidsNumber, float alignF, float cohesionF, float separationF);
+	void flock(Boid* boids, int boidsNumber, float alignF, float cohesionF, float separationF, float perceptionRadias);
 	void checkEdges(glm::vec2 boundies);
 private:
-	glm::vec3 align(Boid* boids, int boidsNumber);
-	glm::vec3 cohesion(Boid* boids, int boidsNumber);
-	glm::vec3 seperation(Boid* boids, int boidsNumber);
+	glm::vec3 align(Boid* boids, int boidsNumber, float perceptionRadias);
+	glm::vec3 cohesion(Boid* boids, int boidsNumber, float perceptionRadias);
+	glm::vec3 seperation(Boid* boids, int boidsNumber, float perceptionRadias);
 };
 

@@ -103,6 +103,7 @@ const int boidsNumber = 150;
 Boid* boids[boidsNumber];
 
 float alignFactor = 3.4f, cohesionFactor = 1.8f, separationFactor = 4.0f;
+float perceptionRadias = 30.0f;
 
 
 float currentFPS;
@@ -237,7 +238,7 @@ void renderScene(GLFWwindow* window)
 
 	for (int i = 0; i < boidsNumber; i++)
 	{
-		boids[i]->flock(*boids, boidsNumber, alignFactor, cohesionFactor, separationFactor);
+		boids[i]->flock(*boids, boidsNumber, alignFactor, cohesionFactor, separationFactor, perceptionRadias);
 		boids[i]->update(*boids, boidsNumber);
 		boids[i]->checkEdges(operationsBoxSize);
 		drawObjectPBR(boids[i]->context,
@@ -269,15 +270,19 @@ void renderScene(GLFWwindow* window)
 
 	ImGui::Text("align:     ");
 	ImGui::SameLine();
-	ImGui::SliderFloat("##align", &alignFactor, 0, 8);
+	ImGui::SliderFloat("##align", &alignFactor, 0, 3);
 
 	ImGui::Text("cohesion:  ");
 	ImGui::SameLine();
-	ImGui::SliderFloat("##cohesion", &cohesionFactor, 0, 8);
+	ImGui::SliderFloat("##cohesion", &cohesionFactor, 0, 3);
 
 	ImGui::Text("separation:");
 	ImGui::SameLine();
-	ImGui::SliderFloat("##separation", &separationFactor, 0, 8);
+	ImGui::SliderFloat("##separation", &separationFactor, 0, 3);
+
+	ImGui::Text("perception radius:");
+	ImGui::SameLine();
+	ImGui::SliderFloat("##perception", &perceptionRadias, 0, 100);
 
 	ImGui::End();
 
@@ -285,7 +290,7 @@ void renderScene(GLFWwindow* window)
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 
-	Sleep(15);
+	//Sleep(15);
 	glUseProgram(0);
 	glfwSwapBuffers(window);
 }

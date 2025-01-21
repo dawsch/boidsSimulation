@@ -18,7 +18,7 @@ Boid::Boid(int id, float perceptionRadias, glm::vec2 startPositionBoundes)
 {
 	
 	this->id = id;
-	this->perceptionRadias = perceptionRadias;
+	//this->perceptionRadias = perceptionRadias;
 	this->position = getRandomVec3(startPositionBoundes.x, startPositionBoundes.y);
 	this->velocity = getRandomVec3(-0.8f, 0.8f);
 	this->acceleration = glm::vec3(0.0f);
@@ -49,7 +49,7 @@ void Boid::checkEdges(glm::vec2 boundies)
 		this->position.z = boundies.x;
 }
 
-glm::vec3 Boid::align(Boid* boids, int boidsNumber)
+glm::vec3 Boid::align(Boid* boids, int boidsNumber, float perceptionRadias)
 {
 	glm::vec3 steering = glm::vec3(0.0f);
 	int total = 0;
@@ -81,7 +81,7 @@ glm::vec3 Boid::align(Boid* boids, int boidsNumber)
 		return glm::vec3(0.0f);
 	return steering;
 }
-glm::vec3 Boid::cohesion(Boid* boids, int boidsNumber)
+glm::vec3 Boid::cohesion(Boid* boids, int boidsNumber, float perceptionRadias)
 {
 	glm::vec3 steering = glm::vec3(0.0f);
 	int total = 0;
@@ -114,7 +114,7 @@ glm::vec3 Boid::cohesion(Boid* boids, int boidsNumber)
 		return glm::vec3(0.0f);
 	return steering;
 }
-glm::vec3 Boid::seperation(Boid* boids, int boidsNumber)
+glm::vec3 Boid::seperation(Boid* boids, int boidsNumber, float perceptionRadias)
 {
 	glm::vec3 steering = glm::vec3(0.0f);
 	int total = 0;
@@ -148,12 +148,12 @@ glm::vec3 Boid::seperation(Boid* boids, int boidsNumber)
 	return steering;
 }
 
-void Boid::flock(Boid* boids, int boidsNumber, float alignF, float cohesionF, float separationF)
+void Boid::flock(Boid* boids, int boidsNumber, float alignF, float cohesionF, float separationF, float perceptionRadias)
 {
 	
-	glm::vec3 aligment = this->align(boids, boidsNumber) * alignF;
-	glm::vec3 cohensia = this->cohesion(boids, boidsNumber) * cohesionF;
-	glm::vec3 seperation = this->seperation(boids, boidsNumber) * separationF;
+	glm::vec3 aligment = this->align(boids, boidsNumber, perceptionRadias) * alignF;
+	glm::vec3 cohensia = this->cohesion(boids, boidsNumber, perceptionRadias) * cohesionF;
+	glm::vec3 seperation = this->seperation(boids, boidsNumber, perceptionRadias) * separationF;
 	this->acceleration = aligment + cohensia + seperation;
 }
 
