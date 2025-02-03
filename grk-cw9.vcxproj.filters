@@ -39,9 +39,6 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\SOIL\SOIL.c">
       <Filter>Source Files\SOIL</Filter>
     </ClCompile>
@@ -74,6 +71,9 @@
     </ClCompile>
     <ClCompile Include="imGUI\imgui_widgets.cpp">
       <Filter>Source Files\imGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\terrain.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -146,6 +146,9 @@
     <ClInclude Include="imGUI\imstb_truetype.h">
       <Filter>Header Files\imGUI</Filter>
     </ClInclude>
+    <ClInclude Include="src\terrain.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\shader_8_sun.vert">
@@ -164,6 +167,12 @@
       <Filter>Shader Files</Filter>
     </None>
     <None Include="shaders\test.vert">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="terrain.vert">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="terrain.frag">
       <Filter>Shader Files</Filter>
     </None>
   </ItemGroup>

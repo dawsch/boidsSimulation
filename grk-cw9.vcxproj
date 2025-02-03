@@ -26,7 +26,7 @@
     <ClCompile Include="src\SOIL\image_helper.c" />
     <ClCompile Include="src\SOIL\SOIL.c" />
     <ClCompile Include="src\SOIL\stb_image_aug.c" />
-    <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Boid.h" />
@@ -51,6 +51,7 @@
     <ClInclude Include="src\SOIL\stbi_DDS_aug.h" />
     <ClInclude Include="src\SOIL\stbi_DDS_aug_c.h" />
     <ClInclude Include="src\SOIL\stb_image_aug.h" />
+    <ClInclude Include="src\terrain.h" />
     <ClInclude Include="src\Texture.h" />
   </ItemGroup>
   <ItemGroup>
@@ -60,6 +61,8 @@
     <None Include="shaders\shader_8_sun.vert" />
     <None Include="shaders\test.frag" />
     <None Include="shaders\test.vert" />
+    <None Include="terrain.frag" />
+    <None Include="terrain.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5BACD057-4B83-4CB6-A367-40A10BCE2149}</ProjectGuid>

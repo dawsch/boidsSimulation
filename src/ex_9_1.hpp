@@ -9,6 +9,7 @@
 #include "Render_Utils.h"
 //#include "Texture.h"
 
+#include "terrain.h"
 #include "Boid.h"
 //#include "Box.cpp"
 #include <assimp/Importer.hpp>
@@ -27,20 +28,8 @@ const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 int WIDTH = 900, HEIGHT = 700;
 
 namespace models {
-	Core::RenderContext bedContext;
-	Core::RenderContext chairContext;
-	Core::RenderContext deskContext;
-	Core::RenderContext doorContext;
-	Core::RenderContext drawerContext;
-	Core::RenderContext marbleBustContext;
-	Core::RenderContext materaceContext;
-	Core::RenderContext pencilsContext;
-	Core::RenderContext planeContext;
-	Core::RenderContext roomContext;
 	Core::RenderContext spaceshipContext;
 	Core::RenderContext sphereContext;
-	Core::RenderContext windowContext;
-	Core::RenderContext testContext;
 }
 
 GLuint depthMapFBO;
@@ -101,6 +90,7 @@ float spotlightPhi = 3.14 / 4;
 
 const int boidsNumber = 150;
 Boid* boids[boidsNumber];
+Terrain* terrain;
 
 float alignFactor = 3.4f, cohesionFactor = 1.8f, separationFactor = 4.0f;
 float perceptionRadias = 30.0f;
@@ -123,40 +113,12 @@ void updateDeltaTime(float time) {
 }
 glm::mat4 createCameraMatrix()
 {
-	/*glm::vec3 cameraSide = glm::normalize(glm::cross(cameraDir,glm::vec3(0.f,1.f,0.f)));
-	glm::vec3 cameraUp = glm::normalize(glm::cross(cameraSide,cameraDir));
-	glm::mat4 cameraRotrationMatrix = glm::mat4({
-		cameraSide.x,cameraSide.y,cameraSide.z,0,
-		cameraUp.x,cameraUp.y,cameraUp.z ,0,
-		-cameraDir.x,-cameraDir.y,-cameraDir.z,0,
-		0.,0.,0.,1.,
-		});
-	cameraRotrationMatrix = glm::transpose(cameraRotrationMatrix);
-	glm::mat4 cameraMatrix = cameraRotrationMatrix * glm::translate(-cameraPos);
-
-	return cameraMatrix;*/
 	return glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 }
 
 glm::mat4 createPerspectiveMatrix()
 {
-	
-	/*glm::mat4 perspectiveMatrix;
-	float n = 0.05;
-	float f = 20.;
-	float a1 = glm::min(aspectRatio, 1.f);
-	float a2 = glm::min(1 / aspectRatio, 1.f);
-	perspectiveMatrix = glm::mat4({
-		1,0.,0.,0.,
-		0.,aspectRatio,0.,0.,
-		0.,0.,(f+n) / (n - f),2*f * n / (n - f),
-		0.,0.,-1.,0.,
-		});
 
-	
-	perspectiveMatrix=glm::transpose(perspectiveMatrix);
-
-	return perspectiveMatrix;*/
 	return glm::perspective(glm::radians((float)rdFieldOfView), (float)WIDTH / (float)HEIGHT, 0.1f, 1000.0f);
 }
 
@@ -206,11 +168,6 @@ void renderShadowapSun() {
 
 void renderScene(GLFWwindow* window)
 {
-
-	
-
-	
-
 	glClearColor(0.4f, 0.4f, 0.8f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	float time = glfwGetTime();
@@ -333,6 +290,9 @@ void init(GLFWwindow* window)
 		boids[i] = new Boid(i, 30.0f, operationsBoxSize);
 		boids[i]->context = shipContext;
 	}
+
+	//terrain = new Terrain();
+	
 }
 
 void shutdown(GLFWwindow* window)
