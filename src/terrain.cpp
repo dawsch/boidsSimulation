@@ -3,6 +3,8 @@
 #include <cmath>
 #include <vector>
 #include <math.h>
+#include "gtc/matrix_transform.hpp"
+#include "gtc/type_ptr.hpp"
 
 
 
@@ -20,7 +22,7 @@ extern float stb_perlin_noise3_wrap_nonpow2(float x, float y, float z, int x_wra
 
 
 // Rozmiar siatki
-const unsigned int gridSize = 100;
+const unsigned int gridSize = 50;
 const float gridSpacing = 1.0f;
 
 
@@ -29,9 +31,15 @@ const float gridSpacing = 1.0f;
 
 Terrain::Terrain()
 {
-    glGenBuffers(1, &this->context.vertexBuffer);
     glGenVertexArrays(1, &this->context.vertexArray);
+    glGenBuffers(1, &this->context.vertexBuffer);
     glGenBuffers(1, &this->context.vertexIndexBuffer);
+    
+    this->vertices = new float[gridSize * gridSize * 3];
+    this->verticesNumber = gridSize * gridSize;
+    this->indices = new unsigned int[gridSize * gridSize * 6];    //(2*((gridSize - 1) * gridSize) + (gridSize * gridSize)) * 2
+
+    this->context.size = gridSize * gridSize * 6;
 
     //this->vertices = float[30000];
 
@@ -43,15 +51,27 @@ Terrain::Terrain()
     glBindVertexArray(this->context.vertexArray);
     // 2. copy our vertices array in a vertex buffer for OpenGL to use
     glBindBuffer(GL_ARRAY_BUFFER, this->context.vertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(this->vertices), this->vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, this->verticesNumber * 3 * sizeof(float), this->vertices, GL_STATIC_DRAW);
     // 3. copy our index array in a element buffer for OpenGL to use
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->context.vertexIndexBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(this->indices), this->indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->verticesNumber * 6 * sizeof(unsigned int), this->indices, GL_STATIC_DRAW);
     // 4. then set the vertex attributes pointers
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
 
-    //this->program = shaderLoader.CreateProgram("shaders/terrain.vert", "shaders/terrain.frag");
+    this->program = shaderLoader.CreateProgram("shaders/terrain.vert", "shaders/terrain.frag");
+}
+void Terrain::render(glm::mat4 cameraMatrix, glm::mat4 modelMatrix, glm::mat4 perspectiveMatrix)
+{
+    glUniformMatrix4fv(glGetUniformLocation(this->program, "view"), 1, GL_FALSE, glm::value_ptr(cameraMatrix));
+    glUniformMatrix4fv(glGetUniformLocation(this->program, "projection"), 1, GL_FALSE, glm::value_ptr(perspectiveMatrix));
+    glUniformMatrix4fv(glGetUniformLocation(this->program, "model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+    glUseProgram(this->program);
+    glBindVertexArray(this->context.vertexArray);
+    glDrawElements(GL_TRIANGLES, this->verticesNumber * 6, GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
 }
 
 // Funkcja generuj¹ca dane terenu
@@ -59,9 +79,9 @@ void generateTerrainArray(float* vertices, unsigned int* indices, unsigned int m
     unsigned int vertexIndex = 0;
     unsigned int indexIndex = 0;
 
-    for (unsigned int z = 0; z <= gridSize; ++z) {
-        for (unsigned int x = 0; x <= gridSize; ++x) {
-            if (vertexIndex + 6 >= maxVertices) return; // Ochrona przed przekroczeniem zakresu tablicy
+    for (unsigned int z = 0; z < gridSize; z++) {
+        for (unsigned int x = 0; x < gridSize; x++) {
+            
 
             float height = stb_perlin_noise3(x * 0.1f, z * 0.1f, 0.0f, 0, 0, 0);
 
@@ -74,12 +94,13 @@ void generateTerrainArray(float* vertices, unsigned int* indices, unsigned int m
             //vertices[vertexIndex++] = 0.0f;
             //vertices[vertexIndex++] = 1.0f;
             //vertices[vertexIndex++] = 0.0f;
+
+            //std::cout << vertices[vertexIndex - 3] << "  " << vertices[vertexIndex - 2] << "  " << vertices[vertexIndex - 1] << std::endl;
         }
     }
 
     for (unsigned int z = 0; z < gridSize; ++z) {
         for (unsigned int x = 0; x < gridSize; ++x) {
-            if (indexIndex + 6 >= maxIndices) return; // Ochrona przed przepe³nieniem tablicy indeksów
 
             unsigned int topLeft = z * (gridSize + 1) + x;
             unsigned int topRight = topLeft + 1;
@@ -93,6 +114,8 @@ void generateTerrainArray(float* vertices, unsigned int* indices, unsigned int m
             indices[indexIndex++] = topRight;
             indices[indexIndex++] = bottomLeft;
             indices[indexIndex++] = bottomRight;
+
+            //std::cout << indices[indexIndex - 6] << " " << indices[indexIndex - 5] << " " << indices[indexIndex - 4] << "  " << indices[indexIndex - 3] << " " << indices[indexIndex - 2] << " " << indices[indexIndex - 1] << std::endl;
         }
     }
 }

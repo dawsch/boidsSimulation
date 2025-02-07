@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 #include "glm.hpp"
 #include "ext.hpp"
+
 #include <iostream>
 #include <cmath>
 
@@ -45,7 +46,7 @@ Core::Shader_Loader shaderLoader;
 Core::RenderContext shipContext;
 Core::RenderContext sphereContext;
 
-glm::vec3 sunPos = glm::vec3(-4.740971f, 2.149999f, 0.369280f);
+glm::vec3 sunPos = glm::vec3(0, 0, 0);
 glm::vec3 sunDir = glm::vec3(-0.93633f, 0.351106, 0.003226f);
 glm::vec3 sunColor = glm::vec3(0.9f, 0.9f, 0.7f)*5;
 
@@ -204,6 +205,12 @@ void renderScene(GLFWwindow* window)
 			0.8, 0.1
 		);
 	}
+
+	drawObjectPBR(terrain->context, glm::mat4(0), glm::vec3(0.3f, 0.45f, 0.78f), 0.8, 0.1);
+
+	//terrain->render(createCameraMatrix(), glm::mat4(0), createPerspectiveMatrix());
+
+
 	
 
 	spotlightPos = spaceshipPos + 0.2 * spaceshipDir;
@@ -291,7 +298,7 @@ void init(GLFWwindow* window)
 		boids[i]->context = shipContext;
 	}
 
-	//terrain = new Terrain();
+	terrain = new Terrain();
 	
 }
 

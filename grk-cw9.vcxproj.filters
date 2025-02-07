@@ -169,10 +169,10 @@
     <None Include="shaders\test.vert">
       <Filter>Shader Files</Filter>
     </None>
-    <None Include="terrain.vert">
+    <None Include="shaders\terrain.frag">
       <Filter>Shader Files</Filter>
     </None>
-    <None Include="terrain.frag">
+    <None Include="shaders\terrain.vert">
       <Filter>Shader Files</Filter>
     </None>
   </ItemGroup>

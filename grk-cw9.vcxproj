@@ -59,10 +59,10 @@
     <None Include="shaders\shader_9_1.vert" />
     <None Include="shaders\shader_8_sun.frag" />
     <None Include="shaders\shader_8_sun.vert" />
+    <None Include="shaders\terrain.frag" />
+    <None Include="shaders\terrain.vert" />
     <None Include="shaders\test.frag" />
     <None Include="shaders\test.vert" />
-    <None Include="terrain.frag" />
-    <None Include="terrain.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5BACD057-4B83-4CB6-A367-40A10BCE2149}</ProjectGuid>
