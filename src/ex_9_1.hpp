@@ -57,9 +57,11 @@ glm::vec3 sunColor = glm::vec3(0.9f, 0.9f, 0.7f)*5;
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 
 glm::vec3 cameraPos = glm::vec3(30.0f, 30.0f, 30.0f);
-glm::vec3 target = glm::vec3(0.0f);
+glm::vec3 target = glm::vec3(70.0f, 100.0f, 20.0f);
 glm::vec3 cameraFront = glm::normalize(target - cameraPos);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
+glm::vec3 startDir = glm::normalize(target - cameraPos);
 
 int rdFieldOfView = 45;
 
@@ -299,7 +301,8 @@ void init(GLFWwindow* window)
 	}
 
 	terrain = new Terrain();
-	
+	yaw = glm::degrees(atan2(startDir.z, startDir.x));  // Kąt azymutu
+	pitch = glm::degrees(asin(startDir.y));        // Kąt elewacji
 }
 
 void shutdown(GLFWwindow* window)
@@ -346,6 +349,8 @@ void processInput(GLFWwindow* window)
 		firstMouse = true;
 	}
 }
+
+
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {

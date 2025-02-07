@@ -3,13 +3,9 @@
 #include <cmath>
 #include <vector>
 #include <math.h>
-#include "gtc/matrix_transform.hpp"
-#include "gtc/type_ptr.hpp"
 
 
 void generateTerrainMesh(aiMesh* mesh);
-void generateTerrain(std::vector<float>& vertices, std::vector<unsigned int>& indices);
-void generateTerrainArray(float* vertices, unsigned int* indices, unsigned int maxVertices, unsigned int maxIndices);
 extern float stb_perlin_noise3(float x, float y, float z, int x_wrap, int y_wrap, int z_wrap);
 extern float stb_perlin_noise3_seed(float x, float y, float z, int x_wrap, int y_wrap, int z_wrap, int seed);
 extern float stb_perlin_ridge_noise3(float x, float y, float z, float lacunarity, float gain, float offset, int octaves);
@@ -18,63 +14,16 @@ extern float stb_perlin_turbulence_noise3(float x, float y, float z, float lacun
 extern float stb_perlin_noise3_wrap_nonpow2(float x, float y, float z, int x_wrap, int y_wrap, int z_wrap, unsigned char seed);
 
 
-
-
-
 // Rozmiar siatki
 const unsigned int gridSize = 100;
 const float gridSpacing = 1.0f;
-
-
-//Core::Shader_Loader shaderLoader;
 
 
 Terrain::Terrain()
 {
     generateTerrainMesh(&this->mesh);
     this->context.initFromAssimpMesh(&this->mesh);
-    //glGenVertexArrays(1, &this->context.vertexArray);
-    //glGenBuffers(1, &this->context.vertexBuffer);
-    //glGenBuffers(1, &this->context.vertexIndexBuffer);
-    //
-    //this->vertices = new float[gridSize * gridSize * 3];
-    //this->verticesNumber = gridSize * gridSize;
-    //this->indices = new unsigned int[gridSize * gridSize * 6];    //(2*((gridSize - 1) * gridSize) + (gridSize * gridSize)) * 2
-
-    //this->context.size = gridSize * gridSize * 6;
-
-    ////this->vertices = float[30000];
-
-    ///*std::vector<float> vertices;
-    //std::vector<unsigned int> ind;
-    //generateTerrain(vertices, ind);*/
-    //generateTerrainArray(this->vertices, this->indices, gridSize * gridSize * 3, gridSize * gridSize * 6);
-
-    //glBindVertexArray(this->context.vertexArray);
-    //// 2. copy our vertices array in a vertex buffer for OpenGL to use
-    //glBindBuffer(GL_ARRAY_BUFFER, this->context.vertexBuffer);
-    //glBufferData(GL_ARRAY_BUFFER, this->verticesNumber * 3 * sizeof(float), this->vertices, GL_STATIC_DRAW);
-    //// 3. copy our index array in a element buffer for OpenGL to use
-    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->context.vertexIndexBuffer);
-    //glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->verticesNumber * 6 * sizeof(unsigned int), this->indices, GL_STATIC_DRAW);
-    //// 4. then set the vertex attributes pointers
-    //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    //glEnableVertexAttribArray(0);
-    //glBindBuffer(GL_ARRAY_BUFFER, 0);
-    //glBindVertexArray(0);
-
-    //this->program = shaderLoader.CreateProgram("shaders/terrain.vert", "shaders/terrain.frag");
 }
-//void Terrain::render(glm::mat4 cameraMatrix, glm::mat4 modelMatrix, glm::mat4 perspectiveMatrix)
-//{
-//    glUniformMatrix4fv(glGetUniformLocation(this->program, "view"), 1, GL_FALSE, glm::value_ptr(cameraMatrix));
-//    glUniformMatrix4fv(glGetUniformLocation(this->program, "projection"), 1, GL_FALSE, glm::value_ptr(perspectiveMatrix));
-//    glUniformMatrix4fv(glGetUniformLocation(this->program, "model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
-//    glUseProgram(this->program);
-//    glBindVertexArray(this->context.vertexArray);
-//    glDrawElements(GL_TRIANGLES, this->verticesNumber * 6, GL_UNSIGNED_INT, 0);
-//    glBindVertexArray(0);
-//}
 
 // Funkcja generuj¹ca dane terenu
 void generateTerrainMesh(aiMesh* mesh) 
@@ -88,7 +37,11 @@ void generateTerrainMesh(aiMesh* mesh)
     mesh->mTangents = new aiVector3D[mesh->mNumVertices];
     mesh->mBitangents = new aiVector3D[mesh->mNumVertices];
 
-    mesh->mTextureCoords[0] = nullptr;
+    mesh->mTextureCoords[0] = new aiVector3D[mesh->mNumVertices];
+    mesh->mBitangents = new aiVector3D[mesh->mNumVertices];
+
+    memset(mesh->mTangents, 0, sizeof(aiVector3D) * mesh->mNumVertices);
+    memset(mesh->mBitangents, 0, sizeof(aiVector3D) * mesh->mNumVertices);
 
     mesh->mNumFaces = (gridSize - 1) * (gridSize - 1) * 2;
     mesh->mFaces = new aiFace[mesh->mNumFaces];
@@ -107,17 +60,16 @@ void generateTerrainMesh(aiMesh* mesh)
             mesh->mVertices[vertexIndex] = vec;
 
             // Obliczanie normalnej jako iloczyn wektorowy wektorów s¹siednich
-            float hL = stb_perlin_noise3((x - 1) * 0.1f, z * 0.1f, 0.0f, 0, 0, 0) * 5.0f; // wysokoœæ w lewo
-            float hR = stb_perlin_noise3((x + 1) * 0.1f, z * 0.1f, 0.0f, 0, 0, 0) * 5.0f; // wysokoœæ w prawo
-            float hD = stb_perlin_noise3(x * 0.1f, (z - 1) * 0.1f, 0.0f, 0, 0, 0) * 5.0f; // wysokoœæ w dó³
-            float hU = stb_perlin_noise3(x * 0.1f, (z + 1) * 0.1f, 0.0f, 0, 0, 0) * 5.0f; // wysokoœæ w górê
+            float hL = stb_perlin_noise3((x - 1) * 0.1f, z * 0.1f, 0.0f, 0, 0, 0) * 5.0f;
+            float hR = stb_perlin_noise3((x + 1) * 0.1f, z * 0.1f, 0.0f, 0, 0, 0) * 5.0f;
+            float hD = stb_perlin_noise3(x * 0.1f, (z - 1) * 0.1f, 0.0f, 0, 0, 0) * 5.0f;
+            float hU = stb_perlin_noise3(x * 0.1f, (z + 1) * 0.1f, 0.0f, 0, 0, 0) * 5.0f;
 
-            aiVector3D dx(2.0f * gridSpacing, hR - hL, 0.0f); // Wektor ró¿nicy w osi X
-            aiVector3D dz(0.0f, hU - hD, 2.0f * gridSpacing); // Wektor ró¿nicy w osi Z
+            aiVector3D dx(2.0f * gridSpacing, hR - hL, 0.0f);
+            aiVector3D dz(0.0f, hU - hD, 2.0f * gridSpacing);
 
-            // Normalna = iloczyn wektorowy dx × dz
-            aiVector3D normal = dx ^ dz; // Operator ^ w Assimp to iloczyn wektorowy
-            normal.Normalize(); // Normalizacja wektora normalnego
+            aiVector3D normal = dx ^ dz;
+            normal.Normalize();
 
             mesh->mNormals[vertexIndex] = normal;
 
@@ -146,19 +98,6 @@ void generateTerrainMesh(aiMesh* mesh)
             indices[indexIndex++] = topRight;
             indices[indexIndex++] = topLeft;
 
-            /*unsigned int topLeft = z * (gridSize + 1) + x;
-            unsigned int topRight = topLeft + 1;
-            unsigned int bottomLeft = (z + 1) * (gridSize + 1) + x;
-            unsigned int bottomRight = bottomLeft + 1;
-
-            indices[indexIndex++] = topLeft;
-            indices[indexIndex++] = bottomLeft;
-            indices[indexIndex++] = topRight;
-
-            indices[indexIndex++] = topRight;
-            indices[indexIndex++] = bottomLeft;
-            indices[indexIndex++] = bottomRight;*/
-
             //std::cout << indices[indexIndex - 6] << " " << indices[indexIndex - 5] << " " << indices[indexIndex - 4] << "  " << indices[indexIndex - 3] << " " << indices[indexIndex - 2] << " " << indices[indexIndex - 1] << std::endl;
             vertexIndex++;
         }
@@ -171,100 +110,63 @@ void generateTerrainMesh(aiMesh* mesh)
         mesh->mFaces[i].mIndices[1] = indices[i * 3 + 1];
         mesh->mFaces[i].mIndices[2] = indices[i * 3 + 2];
     }
+
+
+    for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
+        aiFace& face = mesh->mFaces[i];
+
+        // Pobieramy indeksy trójk¹ta
+        unsigned int i0 = face.mIndices[0];
+        unsigned int i1 = face.mIndices[1];
+        unsigned int i2 = face.mIndices[2];
+
+        // Pobieramy wierzcho³ki
+        aiVector3D& v0 = mesh->mVertices[i0];
+        aiVector3D& v1 = mesh->mVertices[i1];
+        aiVector3D& v2 = mesh->mVertices[i2];
+
+        // Pobieramy wspó³rzêdne UV (jeœli istniej¹)
+        if (!mesh->HasTextureCoords(0)) continue;
+        aiVector3D& uv0 = mesh->mTextureCoords[0][i0];
+        aiVector3D& uv1 = mesh->mTextureCoords[0][i1];
+        aiVector3D& uv2 = mesh->mTextureCoords[0][i2];
+
+        // Obliczanie dwóch wektorów krawêdziowych
+        aiVector3D edge1 = v1 - v0;
+        aiVector3D edge2 = v2 - v0;
+
+        // Ró¿nice w UV
+        float deltaU1 = uv1.x - uv0.x;
+        float deltaV1 = uv1.y - uv0.y;
+        float deltaU2 = uv2.x - uv0.x;
+        float deltaV2 = uv2.y - uv0.y;
+
+        float f = 1.0f / (deltaU1 * deltaV2 - deltaU2 * deltaV1);
+
+        // Obliczanie tangentu
+        aiVector3D tangent;
+        tangent.x = f * (deltaV2 * edge1.x - deltaV1 * edge2.x);
+        tangent.y = f * (deltaV2 * edge1.y - deltaV1 * edge2.y);
+        tangent.z = f * (deltaV2 * edge1.z - deltaV1 * edge2.z);
+        tangent.Normalize();
+
+        // Obliczanie bitangentu (prostopad³y do normalnej i tangentu)
+        aiVector3D normal = mesh->mNormals[i0];  // Zak³adamy, ¿e normalne s¹ ju¿ obliczone
+        aiVector3D bitangent = normal ^ tangent; // Iloczyn wektorowy
+        bitangent.Normalize();
+
+        // Przypisujemy do wszystkich trzech wierzcho³ków trójk¹ta
+        mesh->mTangents[i0] = tangent;
+        mesh->mTangents[i1] = tangent;
+        mesh->mTangents[i2] = tangent;
+
+        mesh->mBitangents[i0] = bitangent;
+        mesh->mBitangents[i1] = bitangent;
+        mesh->mBitangents[i2] = bitangent;
+    }
+
 }
 
-
-
-
-
-
-
-
-void generateTerrainArray(float* vertices, unsigned int* indices, unsigned int maxVertices, unsigned int maxIndices) {
-    unsigned int vertexIndex = 0;
-    unsigned int indexIndex = 0;
-
-    for (unsigned int z = 0; z < gridSize; z++) {
-        for (unsigned int x = 0; x < gridSize; x++) {
-            
-
-            float height = stb_perlin_noise3(x * 0.1f, z * 0.1f, 0.0f, 0, 0, 0);
-
-            // Wspó³rzêdne (x, y, z)
-            vertices[vertexIndex++] = x * gridSpacing;
-            vertices[vertexIndex++] = height * 5.0f;
-            vertices[vertexIndex++] = z * gridSpacing;
-
-            // Wektor normalny
-            //vertices[vertexIndex++] = 0.0f;
-            //vertices[vertexIndex++] = 1.0f;
-            //vertices[vertexIndex++] = 0.0f;
-
-            //std::cout << vertices[vertexIndex - 3] << "  " << vertices[vertexIndex - 2] << "  " << vertices[vertexIndex - 1] << std::endl;
-        }
-    }
-
-    for (unsigned int z = 0; z < gridSize; ++z) {
-        for (unsigned int x = 0; x < gridSize; ++x) {
-
-            unsigned int topLeft = z * (gridSize + 1) + x;
-            unsigned int topRight = topLeft + 1;
-            unsigned int bottomLeft = (z + 1) * (gridSize + 1) + x;
-            unsigned int bottomRight = bottomLeft + 1;
-
-            indices[indexIndex++] = topLeft;
-            indices[indexIndex++] = bottomLeft;
-            indices[indexIndex++] = topRight;
-
-            indices[indexIndex++] = topRight;
-            indices[indexIndex++] = bottomLeft;
-            indices[indexIndex++] = bottomRight;
-
-            //std::cout << indices[indexIndex - 6] << " " << indices[indexIndex - 5] << " " << indices[indexIndex - 4] << "  " << indices[indexIndex - 3] << " " << indices[indexIndex - 2] << " " << indices[indexIndex - 1] << std::endl;
-        }
-    }
-}
-void generateTerrain(std::vector<float>& vertices, std::vector<unsigned int>& indices) 
-{
-    for (unsigned int z = 0; z <= gridSize; ++z) {
-        for (unsigned int x = 0; x <= gridSize; ++x) {
-            // Wspó³rzêdne (x, y, z)
-            float height = stb_perlin_noise3(x * 0.1f, z * 0.1f, 0.0f, 0, 0, 0); // Szum Perlin'a
-            vertices.push_back(x * gridSpacing);  // x
-            vertices.push_back(height * 5.0f);    // y (wysokoœæ)
-            vertices.push_back(z * gridSpacing);  // z
-
-            // Wektor normalny (ustawiony domyœlnie)
-            //vertices.push_back(0.0f); // nx
-            //vertices.push_back(1.0f); // ny
-            //vertices.push_back(0.0f); // nz
-        }
-    }
-
-    // Tworzenie indeksów do rysowania siatki
-    for (unsigned int z = 0; z < gridSize; ++z) {
-        for (unsigned int x = 0; x < gridSize; ++x) {
-            unsigned int topLeft = z * (gridSize + 1) + x;
-            unsigned int topRight = topLeft + 1;
-            unsigned int bottomLeft = (z + 1) * (gridSize + 1) + x;
-            unsigned int bottomRight = bottomLeft + 1;
-
-            indices.push_back(topLeft);
-            indices.push_back(bottomLeft);
-            indices.push_back(topRight);
-
-            indices.push_back(topRight);
-            indices.push_back(bottomLeft);
-            indices.push_back(bottomRight);
-        }
-    }
-}
-
-
- // fabs()
-
-// not same permutation table as Perlin's reference to avoid copyright issues;
-// Perlin's table can be found at http://mrl.nyu.edu/~perlin/noise/
 static unsigned char stb__perlin_randtab[512] =
 {
    23, 125, 161, 52, 103, 117, 70, 37, 247, 101, 203, 169, 124, 126, 44, 123,
@@ -284,7 +186,6 @@ static unsigned char stb__perlin_randtab[512] =
    27, 255, 0, 194, 59, 116, 242, 252, 19, 21, 187, 53, 207, 129, 64, 135,
    61, 40, 167, 237, 102, 223, 106, 159, 197, 189, 215, 137, 36, 32, 22, 5,
 
-   // and a second copy so we don't need an extra mask or static initializer
    23, 125, 161, 52, 103, 117, 70, 37, 247, 101, 203, 169, 124, 126, 44, 123,
    152, 238, 145, 45, 171, 114, 253, 10, 192, 136, 4, 157, 249, 30, 35, 72,
    175, 63, 77, 90, 181, 16, 96, 111, 133, 104, 75, 162, 93, 56, 66, 240,
@@ -303,13 +204,6 @@ static unsigned char stb__perlin_randtab[512] =
    61, 40, 167, 237, 102, 223, 106, 159, 197, 189, 215, 137, 36, 32, 22, 5,
 };
 
-
-// perlin's gradient has 12 cases so some get used 1/16th of the time
-// and some 2/16ths. We reduce bias by changing those fractions
-// to 5/64ths and 6/64ths
-
-// this array is designed to match the previous implementation
-// of gradient hash: indices[stb__perlin_randtab[i]&63]
 static unsigned char stb__perlin_randtab_grad_idx[512] =
 {
     7, 9, 5, 0, 11, 1, 6, 9, 3, 9, 11, 1, 8, 10, 4, 7,
@@ -359,7 +253,6 @@ static int stb__perlin_fastfloor(float a)
     return (a < ai) ? ai - 1 : ai;
 }
 
-// different grad function from Perlin's, but easy to modify to match reference
 static float stb__perlin_grad(int grad_idx, float x, float y, float z)
 {
     static float basis[12][4] =
