@@ -7,7 +7,7 @@
 #include "gtc/type_ptr.hpp"
 
 
-
+void generateTerrainMesh(aiMesh* mesh);
 void generateTerrain(std::vector<float>& vertices, std::vector<unsigned int>& indices);
 void generateTerrainArray(float* vertices, unsigned int* indices, unsigned int maxVertices, unsigned int maxIndices);
 extern float stb_perlin_noise3(float x, float y, float z, int x_wrap, int y_wrap, int z_wrap);
@@ -22,7 +22,7 @@ extern float stb_perlin_noise3_wrap_nonpow2(float x, float y, float z, int x_wra
 
 
 // Rozmiar siatki
-const unsigned int gridSize = 50;
+const unsigned int gridSize = 100;
 const float gridSpacing = 1.0f;
 
 
@@ -31,50 +31,155 @@ const float gridSpacing = 1.0f;
 
 Terrain::Terrain()
 {
-    glGenVertexArrays(1, &this->context.vertexArray);
-    glGenBuffers(1, &this->context.vertexBuffer);
-    glGenBuffers(1, &this->context.vertexIndexBuffer);
-    
-    this->vertices = new float[gridSize * gridSize * 3];
-    this->verticesNumber = gridSize * gridSize;
-    this->indices = new unsigned int[gridSize * gridSize * 6];    //(2*((gridSize - 1) * gridSize) + (gridSize * gridSize)) * 2
+    generateTerrainMesh(&this->mesh);
+    this->context.initFromAssimpMesh(&this->mesh);
+    //glGenVertexArrays(1, &this->context.vertexArray);
+    //glGenBuffers(1, &this->context.vertexBuffer);
+    //glGenBuffers(1, &this->context.vertexIndexBuffer);
+    //
+    //this->vertices = new float[gridSize * gridSize * 3];
+    //this->verticesNumber = gridSize * gridSize;
+    //this->indices = new unsigned int[gridSize * gridSize * 6];    //(2*((gridSize - 1) * gridSize) + (gridSize * gridSize)) * 2
 
-    this->context.size = gridSize * gridSize * 6;
+    //this->context.size = gridSize * gridSize * 6;
 
-    //this->vertices = float[30000];
+    ////this->vertices = float[30000];
 
-    /*std::vector<float> vertices;
-    std::vector<unsigned int> ind;
-    generateTerrain(vertices, ind);*/
-    generateTerrainArray(this->vertices, this->indices, gridSize * gridSize * 3, gridSize * gridSize * 6);
+    ///*std::vector<float> vertices;
+    //std::vector<unsigned int> ind;
+    //generateTerrain(vertices, ind);*/
+    //generateTerrainArray(this->vertices, this->indices, gridSize * gridSize * 3, gridSize * gridSize * 6);
 
-    glBindVertexArray(this->context.vertexArray);
-    // 2. copy our vertices array in a vertex buffer for OpenGL to use
-    glBindBuffer(GL_ARRAY_BUFFER, this->context.vertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, this->verticesNumber * 3 * sizeof(float), this->vertices, GL_STATIC_DRAW);
-    // 3. copy our index array in a element buffer for OpenGL to use
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->context.vertexIndexBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->verticesNumber * 6 * sizeof(unsigned int), this->indices, GL_STATIC_DRAW);
-    // 4. then set the vertex attributes pointers
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+    //glBindVertexArray(this->context.vertexArray);
+    //// 2. copy our vertices array in a vertex buffer for OpenGL to use
+    //glBindBuffer(GL_ARRAY_BUFFER, this->context.vertexBuffer);
+    //glBufferData(GL_ARRAY_BUFFER, this->verticesNumber * 3 * sizeof(float), this->vertices, GL_STATIC_DRAW);
+    //// 3. copy our index array in a element buffer for OpenGL to use
+    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->context.vertexIndexBuffer);
+    //glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->verticesNumber * 6 * sizeof(unsigned int), this->indices, GL_STATIC_DRAW);
+    //// 4. then set the vertex attributes pointers
+    //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    //glEnableVertexAttribArray(0);
+    //glBindBuffer(GL_ARRAY_BUFFER, 0);
+    //glBindVertexArray(0);
 
-    this->program = shaderLoader.CreateProgram("shaders/terrain.vert", "shaders/terrain.frag");
+    //this->program = shaderLoader.CreateProgram("shaders/terrain.vert", "shaders/terrain.frag");
 }
-void Terrain::render(glm::mat4 cameraMatrix, glm::mat4 modelMatrix, glm::mat4 perspectiveMatrix)
-{
-    glUniformMatrix4fv(glGetUniformLocation(this->program, "view"), 1, GL_FALSE, glm::value_ptr(cameraMatrix));
-    glUniformMatrix4fv(glGetUniformLocation(this->program, "projection"), 1, GL_FALSE, glm::value_ptr(perspectiveMatrix));
-    glUniformMatrix4fv(glGetUniformLocation(this->program, "model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
-    glUseProgram(this->program);
-    glBindVertexArray(this->context.vertexArray);
-    glDrawElements(GL_TRIANGLES, this->verticesNumber * 6, GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
-}
+//void Terrain::render(glm::mat4 cameraMatrix, glm::mat4 modelMatrix, glm::mat4 perspectiveMatrix)
+//{
+//    glUniformMatrix4fv(glGetUniformLocation(this->program, "view"), 1, GL_FALSE, glm::value_ptr(cameraMatrix));
+//    glUniformMatrix4fv(glGetUniformLocation(this->program, "projection"), 1, GL_FALSE, glm::value_ptr(perspectiveMatrix));
+//    glUniformMatrix4fv(glGetUniformLocation(this->program, "model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+//    glUseProgram(this->program);
+//    glBindVertexArray(this->context.vertexArray);
+//    glDrawElements(GL_TRIANGLES, this->verticesNumber * 6, GL_UNSIGNED_INT, 0);
+//    glBindVertexArray(0);
+//}
 
 // Funkcja generuj¹ca dane terenu
+void generateTerrainMesh(aiMesh* mesh) 
+{
+    unsigned int vertexIndex = 0;
+    unsigned int indexIndex = 0;
+
+    mesh->mNumVertices = gridSize * gridSize;
+    mesh->mVertices = new aiVector3D[mesh->mNumVertices];
+    mesh->mNormals = new aiVector3D[mesh->mNumVertices];
+    mesh->mTangents = new aiVector3D[mesh->mNumVertices];
+    mesh->mBitangents = new aiVector3D[mesh->mNumVertices];
+
+    mesh->mTextureCoords[0] = nullptr;
+
+    mesh->mNumFaces = (gridSize - 1) * (gridSize - 1) * 2;
+    mesh->mFaces = new aiFace[mesh->mNumFaces];
+
+    for (unsigned int z = 0; z < gridSize; z++) {
+        for (unsigned int x = 0; x < gridSize; x++) {
+
+
+            float height = stb_perlin_noise3(x * 0.1f, z * 0.1f, 0.0f, 0, 0, 0);
+
+            // Wspó³rzêdne (x, y, z)
+            aiVector3D vec;
+            vec.x = x * gridSpacing;
+            vec.y = height * 5.0f;
+            vec.z = z * gridSpacing;
+            mesh->mVertices[vertexIndex] = vec;
+
+            // Obliczanie normalnej jako iloczyn wektorowy wektorów s¹siednich
+            float hL = stb_perlin_noise3((x - 1) * 0.1f, z * 0.1f, 0.0f, 0, 0, 0) * 5.0f; // wysokoœæ w lewo
+            float hR = stb_perlin_noise3((x + 1) * 0.1f, z * 0.1f, 0.0f, 0, 0, 0) * 5.0f; // wysokoœæ w prawo
+            float hD = stb_perlin_noise3(x * 0.1f, (z - 1) * 0.1f, 0.0f, 0, 0, 0) * 5.0f; // wysokoœæ w dó³
+            float hU = stb_perlin_noise3(x * 0.1f, (z + 1) * 0.1f, 0.0f, 0, 0, 0) * 5.0f; // wysokoœæ w górê
+
+            aiVector3D dx(2.0f * gridSpacing, hR - hL, 0.0f); // Wektor ró¿nicy w osi X
+            aiVector3D dz(0.0f, hU - hD, 2.0f * gridSpacing); // Wektor ró¿nicy w osi Z
+
+            // Normalna = iloczyn wektorowy dx × dz
+            aiVector3D normal = dx ^ dz; // Operator ^ w Assimp to iloczyn wektorowy
+            normal.Normalize(); // Normalizacja wektora normalnego
+
+            mesh->mNormals[vertexIndex] = normal;
+
+
+            //std::cout << vec.x << "  " << vec.y << "  " << vec.z << std::endl;
+            vertexIndex++;
+        }
+    }
+
+    unsigned int* indices = new unsigned int[(gridSize - 1) * (gridSize - 1) * 6];
+
+    vertexIndex = 0;
+    for (unsigned int z = 0; z < gridSize - 1; z++) {
+        for (unsigned int x = 0; x < gridSize - 1; x++) {
+
+            unsigned int topLeft = vertexIndex + gridSize;
+            unsigned int topRight = vertexIndex + gridSize + 1;
+            unsigned int bottomLeft = vertexIndex;
+            unsigned int bottomRight = vertexIndex + 1;
+
+            indices[indexIndex++] = bottomLeft;
+            indices[indexIndex++] = bottomRight;
+            indices[indexIndex++] = topRight;
+
+            indices[indexIndex++] = bottomLeft;
+            indices[indexIndex++] = topRight;
+            indices[indexIndex++] = topLeft;
+
+            /*unsigned int topLeft = z * (gridSize + 1) + x;
+            unsigned int topRight = topLeft + 1;
+            unsigned int bottomLeft = (z + 1) * (gridSize + 1) + x;
+            unsigned int bottomRight = bottomLeft + 1;
+
+            indices[indexIndex++] = topLeft;
+            indices[indexIndex++] = bottomLeft;
+            indices[indexIndex++] = topRight;
+
+            indices[indexIndex++] = topRight;
+            indices[indexIndex++] = bottomLeft;
+            indices[indexIndex++] = bottomRight;*/
+
+            //std::cout << indices[indexIndex - 6] << " " << indices[indexIndex - 5] << " " << indices[indexIndex - 4] << "  " << indices[indexIndex - 3] << " " << indices[indexIndex - 2] << " " << indices[indexIndex - 1] << std::endl;
+            vertexIndex++;
+        }
+        vertexIndex++;
+    }
+    for (size_t i = 0; i < mesh->mNumFaces; ++i) {
+        mesh->mFaces[i].mNumIndices = 3;
+        mesh->mFaces[i].mIndices = new unsigned int[3];
+        mesh->mFaces[i].mIndices[0] = indices[i * 3 + 0];
+        mesh->mFaces[i].mIndices[1] = indices[i * 3 + 1];
+        mesh->mFaces[i].mIndices[2] = indices[i * 3 + 2];
+    }
+}
+
+
+
+
+
+
+
+
 void generateTerrainArray(float* vertices, unsigned int* indices, unsigned int maxVertices, unsigned int maxIndices) {
     unsigned int vertexIndex = 0;
     unsigned int indexIndex = 0;

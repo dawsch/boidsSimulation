@@ -93,7 +93,7 @@ const int boidsNumber = 150;
 Boid* boids[boidsNumber];
 Terrain* terrain;
 
-float alignFactor = 3.4f, cohesionFactor = 1.8f, separationFactor = 4.0f;
+float alignFactor = 2.4f, cohesionFactor = 0.3f, separationFactor = 4.0f;
 float perceptionRadias = 30.0f;
 
 
@@ -206,7 +206,7 @@ void renderScene(GLFWwindow* window)
 		);
 	}
 
-	drawObjectPBR(terrain->context, glm::mat4(0), glm::vec3(0.3f, 0.45f, 0.78f), 0.8, 0.1);
+	drawObjectPBR(terrain->context, glm::mat4(1.0f), glm::vec3(0.5f, 0.7f, 0.9f), 0.4f, 0.1f);
 
 	//terrain->render(createCameraMatrix(), glm::mat4(0), createPerspectiveMatrix());
 
@@ -242,7 +242,7 @@ void renderScene(GLFWwindow* window)
 
 	ImGui::Text("separation:");
 	ImGui::SameLine();
-	ImGui::SliderFloat("##separation", &separationFactor, 0, 3);
+	ImGui::SliderFloat("##separation", &separationFactor, 0, 4);
 
 	ImGui::Text("perception radius:");
 	ImGui::SameLine();
