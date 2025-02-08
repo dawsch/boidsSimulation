@@ -1,4 +1,75 @@
-﻿  terrain.cpp
+﻿  main.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(130,1): warning C4005: "APIENTRY": ponowna definicja makra
+  (kompilowanie pliku źródłowego „src/main.cpp”)
+  C:\Users\tafit\Desktop\uam\grafikaKomputerowa\dependencies\glfw-3.3.8.bin.WIN32\include\GLFW\glfw3.h(123,1):
+  zobacz poprzednią definicję „APIENTRY”
+  
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(92,20): warning C4305: "inicjowanie": obcięcie z "double" do "float"
+  (kompilowanie pliku źródłowego „src/main.cpp”)
+  
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(115,35): warning C4305: "=": obcięcie z "double" do "float"
+  (kompilowanie pliku źródłowego „src/main.cpp”)
+  
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(160,13): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
+  (kompilowanie pliku źródłowego „src/main.cpp”)
+  
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(177,13): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
+  (kompilowanie pliku źródłowego „src/main.cpp”)
+  
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(184,105): warning C4305: "argument": obcięcie z "double" do "T"
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(184,105): warning C4305:         with
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(184,105): warning C4305:         [
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(184,105): warning C4305:             T=float
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(184,105): warning C4305:         ]
+  (kompilowanie pliku źródłowego „src/main.cpp”)
+  
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(192,84): warning C4305: "argument": obcięcie z "double" do "T"
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(192,84): warning C4305:         with
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(192,84): warning C4305:         [
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(192,84): warning C4305:             T=float
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(192,84): warning C4305:         ]
+  (kompilowanie pliku źródłowego „src/main.cpp”)
+  
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(192,215): warning C4305: "argument": obcięcie z "double" do "float"
+  (kompilowanie pliku źródłowego „src/main.cpp”)
+  
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(195,56): warning C4305: "argument": obcięcie z "double" do "T"
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(195,56): warning C4305:         with
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(195,56): warning C4305:         [
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(195,56): warning C4305:             T=float
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(195,56): warning C4305:         ]
+  (kompilowanie pliku źródłowego „src/main.cpp”)
+  
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(196,29): warning C4305: "argument": obcięcie z "double" do "float"
+  (kompilowanie pliku źródłowego „src/main.cpp”)
+  
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(208,9): warning C4305: "argument": obcięcie z "double" do "float"
+  (kompilowanie pliku źródłowego „src/main.cpp”)
+  
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(208,4): warning C4305: "argument": obcięcie z "double" do "float"
+  (kompilowanie pliku źródłowego „src/main.cpp”)
+  
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(223,21): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
+  (kompilowanie pliku źródłowego „src/main.cpp”)
+  
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(362,12): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+  (kompilowanie pliku źródłowego „src/main.cpp”)
+  
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(363,12): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+  (kompilowanie pliku źródłowego „src/main.cpp”)
+  
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(367,17): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
+  (kompilowanie pliku źródłowego „src/main.cpp”)
+  
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(368,17): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
+  (kompilowanie pliku źródłowego „src/main.cpp”)
+  
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(369,11): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+  (kompilowanie pliku źródłowego „src/main.cpp”)
+  
+C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\ex_9_1.hpp(370,11): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+  (kompilowanie pliku źródłowego „src/main.cpp”)
+  
 imgui.obj : warning LNK4075: zignorowano opcję „/EDITANDCONTINUE” z powodu określenia opcji „/INCREMENTAL:NO”
 LINK : warning LNK4098: domyślna biblioteka „MSVCRT” powoduje konflikt z innymi bibliotekami; użyj opcji /NODEFAULTLIB:biblioteka
   grk-cw9.vcxproj -> C:\Users\tafit\Desktop\uam\grafikaKomputerowa\Debug\grk-cw9.exe

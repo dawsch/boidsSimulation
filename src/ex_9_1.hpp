@@ -47,7 +47,8 @@ Core::RenderContext shipContext;
 Core::RenderContext sphereContext;
 
 glm::vec3 sunPos = glm::vec3(0, 0, 0);
-glm::vec3 sunDir = glm::vec3(-0.93633f, 0.351106, 0.003226f);
+//glm::vec3 sunDir = glm::vec3(-0.93633f, 0.351106, 0.003226f);
+glm::vec3 sunDir = glm::vec3(0.0f, -1.0f, 0.0f);
 glm::vec3 sunColor = glm::vec3(0.9f, 0.9f, 0.7f)*5;
 
 //glm::vec3 cameraPos = glm::vec3(0.479490f, 0.750000f, -2.124680f);
