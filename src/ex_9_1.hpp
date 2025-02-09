@@ -155,16 +155,36 @@ void drawObjectPBR(Core::RenderContext& context, glm::mat4 modelMatrix, glm::vec
 	Core::DrawContext(context);
 
 }
+glm::mat4 getLightSpaceMatrix() {
+	float near_plane = 1.0f, far_plane = 100.0f;
+	glm::mat4 lightProjection = glm::ortho(-50.0f, 50.0f, -50.0f, 50.0f, near_plane, far_plane);
+	glm::mat4 lightView = glm::lookAt(sunPos, sunPos + sunDir, glm::vec3(0.0f, 1.0f, 0.0f));
+	return lightProjection * lightView;
+}
 
 void renderShadowapSun() {
-	float time = glfwGetTime();
+	glm::mat4 lightSpaceMatrix = getLightSpaceMatrix();
+
 	glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-	//uzupelnij o renderowanie glebokosci do tekstury
+	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+	glClear(GL_DEPTH_BUFFER_BIT);
 
+	// Use a simple shader for depth rendering
+	glUseProgram(programTest); // Ensure you have a simple shader for depth rendering
 
+	// Render the scene from the light's perspective
+	for (int i = 0; i < boidsNumber; i++) {
+		glm::mat4 model = boids[i]->getModel();
+		glm::mat4 transformation = lightSpaceMatrix * model;
+		glUniformMatrix4fv(glGetUniformLocation(programTest, "transformation"), 1, GL_FALSE, glm::value_ptr(transformation));
+		Core::DrawContext(boids[i]->context);
+	}
 
-
-
+	// Render terrain
+	glm::mat4 terrainModel = glm::mat4(1.0f);
+	glm::mat4 terrainTransformation = lightSpaceMatrix * terrainModel;
+	glUniformMatrix4fv(glGetUniformLocation(programTest, "transformation"), 1, GL_FALSE, glm::value_ptr(terrainTransformation));
+	Core::DrawContext(terrain->context);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glViewport(0, 0, WIDTH, HEIGHT);
@@ -172,13 +192,26 @@ void renderShadowapSun() {
 
 void renderScene(GLFWwindow* window)
 {
+
 	glClearColor(0.4f, 0.4f, 0.8f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	float time = glfwGetTime();
 	updateDeltaTime(time);
+
+	// Render the depth map from the light's perspective
 	renderShadowapSun();
 
-	//space lamp
+	// Bind the depth map texture and pass the light space matrix to the shader
+	glUseProgram(program); // Use the main shader program
+	glActiveTexture(GL_TEXTURE0); // Activate texture unit 0
+	glBindTexture(GL_TEXTURE_2D, depthMap); // Bind the depth map texture
+	glUniform1i(glGetUniformLocation(program, "shadowMap"), 0); // Set the shadowMap uniform to texture unit 0
+
+	// Calculate and pass the light space matrix to the shader
+	glm::mat4 lightSpaceMatrix = getLightSpaceMatrix();
+	glUniformMatrix4fv(glGetUniformLocation(program, "lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+
+	// Render the space lamp
 	glUseProgram(programSun);
 	glm::mat4 viewProjectionMatrix = createPerspectiveMatrix() * createCameraMatrix();
 	glm::mat4 transformation = viewProjectionMatrix * glm::translate(pointlightPos) * glm::scale(glm::vec3(0.1));
@@ -187,16 +220,17 @@ void renderScene(GLFWwindow* window)
 	glUniform1f(glGetUniformLocation(programSun, "exposition"), exposition);
 	Core::DrawContext(sphereContext);
 
+	// Switch back to the main shader program
 	glUseProgram(program);
 
+	// Render objects with PBR lighting and shadows
 	drawObjectPBR(sphereContext, glm::translate(pointlightPos) * glm::scale(glm::vec3(0.1)) * glm::eulerAngleY(time / 3) * glm::translate(glm::vec3(4.f, 0, 0)) * glm::scale(glm::vec3(0.3f)), glm::vec3(0.2, 0.7, 0.3), 0.3, 0.0);
 
 	drawObjectPBR(sphereContext,
 		glm::translate(pointlightPos) * glm::scale(glm::vec3(0.1)) * glm::eulerAngleY(time / 3) * glm::translate(glm::vec3(4.f, 0, 0)) * glm::eulerAngleY(time) * glm::translate(glm::vec3(1.f, 0, 0)) * glm::scale(glm::vec3(0.1f)),
 		glm::vec3(0.5, 0.5, 0.5), 0.7, 0.0);
 
-
-
+	// Update and render boids
 	for (int i = 0; i < boidsNumber; i++)
 	{
 		boids[i]->flock(*boids, boidsNumber, alignFactor, cohesionFactor, separationFactor, perceptionRadias);
@@ -209,21 +243,19 @@ void renderScene(GLFWwindow* window)
 		);
 	}
 
+	// Render terrain
 	drawObjectPBR(terrain->context, glm::mat4(1.0f), glm::vec3(0.5f, 0.7f, 0.9f), 0.4f, 0.1f);
 
-	//terrain->render(createCameraMatrix(), glm::mat4(0), createPerspectiveMatrix());
-
-
-	
-
+	// Update spotlight position and direction
 	spotlightPos = spaceshipPos + 0.2 * spaceshipDir;
 	spotlightConeDir = spaceshipDir;
 
-
+	// Calculate delta time for FPS
 	float currentFrame = glfwGetTime();
 	deltaTime = currentFrame - lastFrame;
 	lastFrame = currentFrame;
 
+	// Render ImGui UI
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
@@ -251,13 +283,20 @@ void renderScene(GLFWwindow* window)
 	ImGui::SameLine();
 	ImGui::SliderFloat("##perception", &perceptionRadias, 0, 100);
 
+	// Add a checkbox to toggle shadow mapping
+	static bool enableShadows = true; // Default to shadows enabled
+	ImGui::Checkbox("Enable Shadows", &enableShadows);
+
+	// Pass the shadow toggle state to the shader
+	glUseProgram(program);
+	glUniform1i(glGetUniformLocation(program, "enableShadows"), enableShadows ? 1 : 0);
+
 	ImGui::End();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-
-	//Sleep(15);
+	// Swap buffers
 	glUseProgram(0);
 	glfwSwapBuffers(window);
 }
@@ -304,7 +343,29 @@ void init(GLFWwindow* window)
 	terrain = new Terrain();
 	yaw = glm::degrees(atan2(startDir.z, startDir.x));  // Kąt azymutu
 	pitch = glm::degrees(asin(startDir.y));        // Kąt elewacji
+
+	// Create depth map FBO
+	glGenFramebuffers(1, &depthMapFBO);
+
+	// Create depth texture
+	glGenTextures(1, &depthMap);
+	glBindTexture(GL_TEXTURE_2D, depthMap);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+
+	// Attach depth texture to FBO
+	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
+
 
 void shutdown(GLFWwindow* window)
 {

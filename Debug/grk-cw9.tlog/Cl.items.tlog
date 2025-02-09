@@ -1,16 +1,16 @@
-C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\imGUI\imgui.cpp;C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\Debug\imgui.obj
-C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\imGUI\imgui_draw.cpp;C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\Debug\imgui_draw.obj
-C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\imGUI\imgui_impl_glfw.cpp;C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\Debug\imgui_impl_glfw.obj
-C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\imGUI\imgui_impl_opengl3.cpp;C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\Debug\imgui_impl_opengl3.obj
-C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\imGUI\imgui_tables.cpp;C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\Debug\imgui_tables.obj
-C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\imGUI\imgui_widgets.cpp;C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\Debug\imgui_widgets.obj
-C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\Boid.cpp;C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\Debug\Boid.obj
-C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\Camera.cpp;C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\Debug\Camera.obj
-C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\main.cpp;C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\Debug\main.obj
-C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\Render_Utils.cpp;C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\Debug\Render_Utils.obj
-C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\Shader_Loader.cpp;C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\Debug\Shader_Loader.obj
-C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\SOIL\image_DXT.c;C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\Debug\image_DXT.obj
-C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\SOIL\image_helper.c;C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\Debug\image_helper.obj
-C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\SOIL\SOIL.c;C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\Debug\SOIL.obj
-C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\SOIL\stb_image_aug.c;C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\Debug\stb_image_aug.obj
-C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\src\terrain.cpp;C:\Users\tafit\Desktop\uam\grafikaKomputerowa\boidsSimulation\Debug\terrain.obj
+A:\Studia\5 semestr\Grafika\grk\boidsSimulation\imGUI\imgui.cpp;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\imgui.obj
+A:\Studia\5 semestr\Grafika\grk\boidsSimulation\imGUI\imgui_draw.cpp;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\imgui_draw.obj
+A:\Studia\5 semestr\Grafika\grk\boidsSimulation\imGUI\imgui_impl_glfw.cpp;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\imgui_impl_glfw.obj
+A:\Studia\5 semestr\Grafika\grk\boidsSimulation\imGUI\imgui_impl_opengl3.cpp;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\imgui_impl_opengl3.obj
+A:\Studia\5 semestr\Grafika\grk\boidsSimulation\imGUI\imgui_tables.cpp;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\imgui_tables.obj
+A:\Studia\5 semestr\Grafika\grk\boidsSimulation\imGUI\imgui_widgets.cpp;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\imgui_widgets.obj
+A:\Studia\5 semestr\Grafika\grk\boidsSimulation\src\Boid.cpp;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\Boid.obj
+A:\Studia\5 semestr\Grafika\grk\boidsSimulation\src\Camera.cpp;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\Camera.obj
+A:\Studia\5 semestr\Grafika\grk\boidsSimulation\src\main.cpp;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\main.obj
+A:\Studia\5 semestr\Grafika\grk\boidsSimulation\src\Render_Utils.cpp;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\Render_Utils.obj
+A:\Studia\5 semestr\Grafika\grk\boidsSimulation\src\Shader_Loader.cpp;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\Shader_Loader.obj
+A:\Studia\5 semestr\Grafika\grk\boidsSimulation\src\SOIL\image_DXT.c;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\image_DXT.obj
+A:\Studia\5 semestr\Grafika\grk\boidsSimulation\src\SOIL\image_helper.c;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\image_helper.obj
+A:\Studia\5 semestr\Grafika\grk\boidsSimulation\src\SOIL\SOIL.c;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\SOIL.obj
+A:\Studia\5 semestr\Grafika\grk\boidsSimulation\src\SOIL\stb_image_aug.c;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\stb_image_aug.obj
+A:\Studia\5 semestr\Grafika\grk\boidsSimulation\src\terrain.cpp;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\terrain.obj
