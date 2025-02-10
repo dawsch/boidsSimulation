@@ -21,6 +21,7 @@ public:
 	void update(Boid* boids, int boidsNumber);
 	void flock(Boid* boids, int boidsNumber, float alignF, float cohesionF, float separationF, float perceptionRadias);
 	void checkEdges(glm::vec2 boundies);
+	void collisons(Boid* boids, int boidsNumber);
 private:
 	glm::vec3 align(Boid* boids, int boidsNumber, float perceptionRadias);
 	glm::vec3 cohesion(Boid* boids, int boidsNumber, float perceptionRadias);

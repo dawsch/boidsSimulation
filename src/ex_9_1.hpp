@@ -236,6 +236,7 @@ void renderScene(GLFWwindow* window)
 		boids[i]->flock(*boids, boidsNumber, alignFactor, cohesionFactor, separationFactor, perceptionRadias);
 		boids[i]->update(*boids, boidsNumber);
 		boids[i]->checkEdges(operationsBoxSize);
+		boids[i]->collisons(*boids, boidsNumber);
 		drawObjectPBR(boids[i]->context,
 			boids[i]->getModel(),
 			boids[i]->color,

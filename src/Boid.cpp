@@ -7,6 +7,7 @@
 #include <random>
 #include <iostream>
 #include <gtx/vector_angle.hpp>
+#include <math.h>
 
 glm::vec3 getRandomVec3(float min = -1.0f, float max = 1.0f);
 glm::vec3 setLength(const glm::vec3& vector, float newLength);
@@ -47,6 +48,40 @@ void Boid::checkEdges(glm::vec2 boundies)
 		this->position.z = boundies.y;
 	if (this->position.z > boundies.y)
 		this->position.z = boundies.x;
+}
+void Boid::collisons(Boid* boids, int boidsNumber)
+{
+	bool collide = false;
+	//this->color = glm::vec3(0.0f, 1.0f, 0.0f);
+	float width = 20;
+	for (int i = 0; i < boidsNumber; i++)
+	{
+		if (boids[i].id != this->id)
+		{
+			//float dis = glm::distance(this->position, boids[i].position);
+			//if (dis <= 20 && dis != 0)
+			//{
+				if (abs(this->position.x - boids[i].position.x) < width)
+				{
+					if (abs(this->position.y - boids[i].position.y) < width)
+					{
+						if (abs(this->position.z - boids[i].position.z) < width)
+						{
+							this->color = glm::vec3(1.0f, 0.0f, 0.0f);
+							boids[i].color = glm::vec3(1.0f, 0.0f, 0.0f);
+							//std::cout << this->id << ": " << this->position.x << " " << this->position.y << " " << this->position.z << " | " << boids[i].id << ": " << boids[i].position.x << " " << boids[i].position.y << " " << boids[i].position.z << std::endl;
+							collide = true;
+						}
+					}
+				}
+
+			//}
+		}
+	}
+	if (collide == false)
+	{
+		this->color = glm::vec3(0.0f, 1.0f, 0.0f);
+	}
 }
 
 glm::vec3 Boid::align(Boid* boids, int boidsNumber, float perceptionRadias)
@@ -102,7 +137,7 @@ glm::vec3 Boid::cohesion(Boid* boids, int boidsNumber, float perceptionRadias)
 	}
 	if (total > 0)
 	{
-		this->color = glm::vec3(1.0f, 0.0f, 0.0f);
+		//this->color = glm::vec3(1.0f, 0.0f, 0.0f);
 		steering = steering / (float)total;
 		steering = steering - this->position;
 		steering = setLength(steering, this->maxSpeed);

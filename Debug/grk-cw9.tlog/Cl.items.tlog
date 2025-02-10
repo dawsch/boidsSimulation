@@ -1,16 +1,16 @@
-A:\Studia\5 semestr\Grafika\grk\boidsSimulation\imGUI\imgui.cpp;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\imgui.obj
-A:\Studia\5 semestr\Grafika\grk\boidsSimulation\imGUI\imgui_draw.cpp;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\imgui_draw.obj
-A:\Studia\5 semestr\Grafika\grk\boidsSimulation\imGUI\imgui_impl_glfw.cpp;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\imgui_impl_glfw.obj
-A:\Studia\5 semestr\Grafika\grk\boidsSimulation\imGUI\imgui_impl_opengl3.cpp;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\imgui_impl_opengl3.obj
-A:\Studia\5 semestr\Grafika\grk\boidsSimulation\imGUI\imgui_tables.cpp;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\imgui_tables.obj
-A:\Studia\5 semestr\Grafika\grk\boidsSimulation\imGUI\imgui_widgets.cpp;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\imgui_widgets.obj
-A:\Studia\5 semestr\Grafika\grk\boidsSimulation\src\Boid.cpp;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\Boid.obj
-A:\Studia\5 semestr\Grafika\grk\boidsSimulation\src\Camera.cpp;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\Camera.obj
-A:\Studia\5 semestr\Grafika\grk\boidsSimulation\src\main.cpp;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\main.obj
-A:\Studia\5 semestr\Grafika\grk\boidsSimulation\src\Render_Utils.cpp;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\Render_Utils.obj
-A:\Studia\5 semestr\Grafika\grk\boidsSimulation\src\Shader_Loader.cpp;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\Shader_Loader.obj
-A:\Studia\5 semestr\Grafika\grk\boidsSimulation\src\SOIL\image_DXT.c;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\image_DXT.obj
-A:\Studia\5 semestr\Grafika\grk\boidsSimulation\src\SOIL\image_helper.c;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\image_helper.obj
-A:\Studia\5 semestr\Grafika\grk\boidsSimulation\src\SOIL\SOIL.c;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\SOIL.obj
-A:\Studia\5 semestr\Grafika\grk\boidsSimulation\src\SOIL\stb_image_aug.c;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\stb_image_aug.obj
-A:\Studia\5 semestr\Grafika\grk\boidsSimulation\src\terrain.cpp;A:\Studia\5 semestr\Grafika\grk\boidsSimulation\Debug\terrain.obj
+C:\uam\grafikaKomputerowa\projects\boidsSimulation\imGUI\imgui.cpp;C:\uam\grafikaKomputerowa\projects\boidsSimulation\Debug\imgui.obj
+C:\uam\grafikaKomputerowa\projects\boidsSimulation\imGUI\imgui_draw.cpp;C:\uam\grafikaKomputerowa\projects\boidsSimulation\Debug\imgui_draw.obj
+C:\uam\grafikaKomputerowa\projects\boidsSimulation\imGUI\imgui_impl_glfw.cpp;C:\uam\grafikaKomputerowa\projects\boidsSimulation\Debug\imgui_impl_glfw.obj
+C:\uam\grafikaKomputerowa\projects\boidsSimulation\imGUI\imgui_impl_opengl3.cpp;C:\uam\grafikaKomputerowa\projects\boidsSimulation\Debug\imgui_impl_opengl3.obj
+C:\uam\grafikaKomputerowa\projects\boidsSimulation\imGUI\imgui_tables.cpp;C:\uam\grafikaKomputerowa\projects\boidsSimulation\Debug\imgui_tables.obj
+C:\uam\grafikaKomputerowa\projects\boidsSimulation\imGUI\imgui_widgets.cpp;C:\uam\grafikaKomputerowa\projects\boidsSimulation\Debug\imgui_widgets.obj
+C:\uam\grafikaKomputerowa\projects\boidsSimulation\src\Boid.cpp;C:\uam\grafikaKomputerowa\projects\boidsSimulation\Debug\Boid.obj
+C:\uam\grafikaKomputerowa\projects\boidsSimulation\src\Camera.cpp;C:\uam\grafikaKomputerowa\projects\boidsSimulation\Debug\Camera.obj
+C:\uam\grafikaKomputerowa\projects\boidsSimulation\src\main.cpp;C:\uam\grafikaKomputerowa\projects\boidsSimulation\Debug\main.obj
+C:\uam\grafikaKomputerowa\projects\boidsSimulation\src\Render_Utils.cpp;C:\uam\grafikaKomputerowa\projects\boidsSimulation\Debug\Render_Utils.obj
+C:\uam\grafikaKomputerowa\projects\boidsSimulation\src\Shader_Loader.cpp;C:\uam\grafikaKomputerowa\projects\boidsSimulation\Debug\Shader_Loader.obj
+C:\uam\grafikaKomputerowa\projects\boidsSimulation\src\SOIL\image_DXT.c;C:\uam\grafikaKomputerowa\projects\boidsSimulation\Debug\image_DXT.obj
+C:\uam\grafikaKomputerowa\projects\boidsSimulation\src\SOIL\image_helper.c;C:\uam\grafikaKomputerowa\projects\boidsSimulation\Debug\image_helper.obj
+C:\uam\grafikaKomputerowa\projects\boidsSimulation\src\SOIL\SOIL.c;C:\uam\grafikaKomputerowa\projects\boidsSimulation\Debug\SOIL.obj
+C:\uam\grafikaKomputerowa\projects\boidsSimulation\src\SOIL\stb_image_aug.c;C:\uam\grafikaKomputerowa\projects\boidsSimulation\Debug\stb_image_aug.obj
+C:\uam\grafikaKomputerowa\projects\boidsSimulation\src\terrain.cpp;C:\uam\grafikaKomputerowa\projects\boidsSimulation\Debug\terrain.obj
